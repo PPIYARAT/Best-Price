@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f1">
+  <meta name="description" content="A simple everyday price comparison tool.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Best Price</title>
+  <style>
+    :root{--paper:#fbf5f5;--card:#fffefa;--ink:#303931;--soft:#858b7f;--line:#eee7e6;--sage:#dff0e4;--moss:#58745d;--peach:#f7e0df;--lav:#eee8f7;--butter:#f8f0d9;--mono:"IBM Plex Mono",monospace;--sans:"IBM Plex Sans",sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:54px 20px 30px}.app{width:min(100%,620px)}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.04em;font-size:19px}.mark{display:grid;place-items:center;width:31px;height:31px;background:var(--peach);border-radius:11px;color:#a96f78;font-size:17px}.caption{font-size:12px;color:var(--soft);letter-spacing:.04em}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 12px 35px #624e4e0b}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}.title{font-size:17px;font-weight:600;letter-spacing:-.025em}.mode{display:flex;padding:4px;border-radius:11px;background:#f7eaea;gap:3px}.mode button{border:0;background:transparent;color:#8b7779;padding:7px 13px;border-radius:8px;font:500 12px var(--sans)}.mode button[aria-pressed="true"]{background:var(--card);color:var(--moss);box-shadow:0 1px 4px #353c3012}
+    .unitrow{height:38px;display:flex;align-items:center;gap:8px;margin:-5px 0 16px;color:var(--soft);font-size:12px}.select{position:relative}.select:after{content:"⌄";position:absolute;right:9px;top:50%;transform:translateY(-55%);color:var(--moss);pointer-events:none}select{appearance:none;border:1px solid var(--line);background:#fffefa;border-radius:8px;padding:6px 24px 6px 9px;color:var(--ink);font:500 12px var(--sans);outline:none}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.item{border:1px solid var(--line);border-radius:16px;padding:16px}.itemhead{display:flex;align-items:center;gap:8px;margin-bottom:14px;font-weight:600;font-size:13px}.badge{width:24px;height:24px;display:grid;place-items:center;background:var(--sage);border-radius:8px;color:var(--moss);font:500 11px var(--mono)}.item:nth-child(2) .badge{background:var(--peach);color:#96684b}.fields{display:grid;grid-template-columns:1fr;gap:11px}.field{display:grid;gap:5px}.field label{font-size:11px;color:var(--soft);font-weight:500}.control{position:relative}.control input{width:100%;height:39px;border:1px solid var(--line);border-radius:9px;background:white;padding:0 44px 0 11px;color:var(--ink);font:500 14px var(--mono);outline:none}.control input:focus,select:focus{border-color:#9bb39a;box-shadow:0 0 0 3px #dce8d955}.unit{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#9a9d92;font-size:10px}
+    .result{margin-top:14px;background:var(--butter);border-radius:15px;padding:15px 16px}.resulttitle{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;color:var(--soft);font-size:11px}.prices{display:grid;grid-template-columns:1fr 1fr;gap:9px}.price{display:flex;justify-content:space-between;align-items:center;border:1px solid #eee8dc;background:#fffefa;border-radius:10px;padding:10px 11px}.price span{color:var(--soft);font-size:11px}.price b{font:500 13px var(--mono);font-variant-numeric:tabular-nums}.price.best{border-color:#b6d2bc;background:#eaf5ec}.price.best b{color:var(--moss)}.verdict{min-height:21px;padding-top:10px;color:var(--moss);font-size:12px;font-weight:600}.verdict.empty{color:#96998e;font-weight:400}.credit{text-align:right;font-size:10px;color:#999d92;margin:14px 2px}.credit a{color:var(--moss);text-decoration:none}.credit a:hover{text-decoration:underline}
+    [hidden]{display:none!important}@media(max-width:540px){body{padding:26px 14px}.app{width:100%}.caption{display:none}.card{padding:17px;border-radius:19px}.top{align-items:flex-start;flex-direction:column;gap:12px}.mode{width:100%}.mode button{flex:1}.grid{grid-template-columns:1fr}.item{padding:14px}.fields{grid-template-columns:1fr 1fr}.price{padding:9px 8px}.price b{font-size:12px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header><div class="brand"><span class="mark" aria-hidden="true">✿</span><span>Best Price</span></div><span class="caption">little price helper</span></header>
+    <main class="card">
+      <div class="top"><div class="title">Price check</div><div class="mode" role="group" aria-label="Compare mode"><button type="button" data-mode="simple" aria-pressed="true">Simple</button><button type="button" data-mode="bundle" aria-pressed="false">Bundle</button></div></div>
+      <div class="unitrow"><label for="measure">Compare by</label><span class="select"><select id="measure"><option value="g">g</option><option value="ml">ml</option><option value="pc">pcs</option></select></span></div>
+      <div class="grid">
+        <section class="item"><div class="itemhead"><span class="badge">01</span><span>Item one</span></div><div class="fields">
+          <div class="field"><label for="price1">Price</label><div class="control"><input id="price1" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"><span class="unit">฿</span></div></div>
+          <div class="field" data-simple><label for="qty1">Total amount</label><div class="control"><input id="qty1" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0"><span class="unit measure-unit">g</span></div></div>
+          <div class="field" data-bundle hidden><label for="count1">Inner bags / pieces</label><div class="control"><input id="count1" type="number" min="0" step="1" inputmode="numeric" placeholder="0"><span class="unit">×</span></div></div>
+          <div class="field" data-bundle hidden><label for="each1">Amount each</label><div class="control"><input id="each1" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0"><span class="unit measure-unit">g</span></div></div>
+        </div></section>
+        <section class="item"><div class="itemhead"><span class="badge">02</span><span>Item two</span></div><div class="fields">
+          <div class="field"><label for="price2">Price</label><div class="control"><input id="price2" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"><span class="unit">฿</span></div></div>
+          <div class="field" data-simple><label for="qty2">Total amount</label><div class="control"><input id="qty2" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0"><span class="unit measure-unit">g</span></div></div>
+          <div class="field" data-bundle hidden><label for="count2">Inner bags / pieces</label><div class="control"><input id="count2" type="number" min="0" step="1" inputmode="numeric" placeholder="0"><span class="unit">×</span></div></div>
+          <div class="field" data-bundle hidden><label for="each2">Amount each</label><div class="control"><input id="each2" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0"><span class="unit measure-unit">g</span></div></div>
+        </div></section>
+      </div>
+      <section class="result" aria-live="polite"><div class="resulttitle"><span id="unit-title">Price / g</span><span id="total">—</span></div><div class="prices"><div class="price" id="cell1"><span>Item 01</span><b id="unitprice1">—</b></div><div class="price" id="cell2"><span>Item 02</span><b id="unitprice2">—</b></div></div><div class="verdict empty" id="verdict">Enter both items</div></section>
+    </main>
+    <div class="credit">Credit By <a href="https://www.facebook.com/piyaratdems/" target="_blank" rel="noopener noreferrer">piyaratdems</a></div>
+  </div>
+  <script>
+    (()=>{
+      let mode='simple';const $=id=>document.getElementById(id);const fmt=new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});const qtyFmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:1});
+      const val=id=>{const v=$(id).value.trim();return v===''?null:Number(v)};const measure=()=>$('measure').value;
+      function item(n){const price=val('price'+n);let amount;if(mode==='simple')amount=val('qty'+n);else{const count=val('count'+n),each=val('each'+n);amount=count===null||each===null?null:count*each}if(price===null||amount===null||price<0||amount<=0||!Number.isFinite(price)||!Number.isFinite(amount))return null;return{price,amount,unitPrice:price/amount}}
+      function draw(){const a=item(1),b=item(2),u=measure();document.querySelectorAll('.measure-unit').forEach(el=>el.textContent=u);$('unit-title').textContent=`Price / ${u==='pc'?'pc':u}`;$('unitprice1').textContent=a?`${fmt.format(a.unitPrice)} ฿`:'—';$('unitprice2').textContent=b?`${fmt.format(b.unitPrice)} ฿`:'—';$('cell1').classList.toggle('best',!!(a&&b&&a.unitPrice<b.unitPrice));$('cell2').classList.toggle('best',!!(a&&b&&b.unitPrice<a.unitPrice));const verdict=$('verdict');if(!a||!b){$('total').textContent='—';verdict.className='verdict empty';verdict.textContent='Enter both items';return}const label=u==='pc'?'pcs':u;$('total').textContent=`${qtyFmt.format(a.amount)} ${label} · ${qtyFmt.format(b.amount)} ${label}`;if(Math.abs(a.unitPrice-b.unitPrice)<1e-10){verdict.className='verdict';verdict.textContent='Same value'}else{const win=a.unitPrice<b.unitPrice?1:2,low=win===1?a:b,high=win===1?b:a;const save=Math.round((1-low.unitPrice/high.unitPrice)*100);verdict.className='verdict';verdict.textContent=`Item 0${win} is better value · ${save}% less per unit`}}
+      document.querySelectorAll('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));document.querySelectorAll('[data-simple]').forEach(el=>el.hidden=mode!=='simple');document.querySelectorAll('[data-bundle]').forEach(el=>el.hidden=mode!=='bundle');draw()}));document.querySelectorAll('input').forEach(el=>el.addEventListener('input',draw));$('measure').addEventListener('change',draw);draw();
+    })();
+  </script>
+</body>
+</html>
